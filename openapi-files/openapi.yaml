@@ -1,0 +1,297 @@
+openapi: 3.0.1
+info:
+  description: |-
+    BEAS Bill Formatter
+  title: Bill Formatter
+  version: 1.0.0
+servers:
+  - url: https://beassolution.com/billFormatter/v1/
+tags:
+  - description: Operations for Project Resource
+    name: project
+paths:
+  /create:
+    post:
+      description: create a new Project.
+      operationId: createProject
+      parameters:
+        - description: Comma-separated properties to be provided in response
+          explode: true
+          in: query
+          name: fields
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: Requested index for start of resources to be provided in response
+          explode: true
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+          style: form
+        - description: Requested number of resources to be provided in response
+          explode: true
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+          style: form
+      requestBody:
+        $ref: '#/components/requestBodies/Project_Body'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: Notified
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error
+      summary: Create a project (Project) to receive Events
+      tags:
+        - project
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+        - tag: create project
+components:
+  examples:
+    Project_create_example_request:
+      description: Here is an example of a request for creating a Project.
+      value:
+        '@type': Project
+        '@baseType': Project
+        name: Serdar TURKEL
+    Project_create_example_response:
+      description: Here is an example of a response for creating a Project.
+      value:
+        id: "1"
+        href: https://beassolution.com/bill-formatter/v1/1
+        '@type': Project
+        '@baseType': Project
+        name: Serdar TURKEL
+  headers:
+    X-Total-Count:
+      description: Total number of items matching criteria
+      explode: false
+      schema:
+        type: integer
+      style: simple
+    X-Result-Count:
+      description: Actual number of items returned in the response body
+      explode: false
+      schema:
+        type: integer
+      style: simple
+  parameters:
+    Id:
+      description: Identifier of the Resource
+      explode: false
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      style: simple
+    Fields:
+      description: Comma-separated properties to be provided in response
+      explode: true
+      in: query
+      name: fields
+      required: false
+      schema:
+        type: string
+      style: form
+    Offset:
+      description: Requested index for start of resources to be provided in response
+      explode: true
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+      style: form
+    Limit:
+      description: Requested number of resources to be provided in response
+      explode: true
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+      style: form
+  requestBodies:
+    Project_Body:
+      content:
+        application/json:
+          examples:
+            Project_create_example:
+              $ref: '#/components/examples/Project_create_example_request'
+          schema:
+            $ref: '#/components/schemas/Project'
+      description: The Project to be created
+      required: true
+  responses:
+    "200":
+      description: OK
+    "202":
+      description: Accepted
+    "204":
+      description: Deleted
+    "400":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad Request
+    "401":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Unauthorized
+    "403":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Forbidden
+    "404":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not Found
+    "405":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Method Not allowed
+    "409":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+    "500":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Internal Server Error
+    "501":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not Implemented
+    "503":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Service Unavailable
+    "201Project":
+      content:
+        application/json:
+          examples:
+            Project_create_example_request:
+              $ref: '#/components/examples/Project_create_example_response'
+          schema:
+            $ref: '#/components/schemas/Project'
+      description: OK/Created
+    Error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Error
+  schemas:
+    Project:
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+      description: Project entity.
+      properties:
+        'name':
+          description: "Project name"
+          type: string
+      discriminator:
+        mapping:
+          ProjectRef: '#/components/schemas/Project'
+        propertyName: '@type'
+      type: object
+    Addressable:
+      description: Base schema for adressable entities
+      properties:
+        href:
+          description: Hyperlink reference
+          type: string
+        id:
+          description: unique identifier
+          type: string
+      type: object
+    Extensible:
+      description: Base Extensible schema for use in TMForum Open-APIs - When used
+        for in a schema it means that the Entity described by the schema  MUST be
+        extended with the @type
+      properties:
+        '@type':
+          description: "When sub-classing, this defines the sub-class Extensible name"
+          type: string
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+      required:
+        - '@type'
+      type: object
+    Entity:
+      allOf:
+        - $ref: '#/components/schemas/Extensible'
+        - $ref: '#/components/schemas/Addressable'
+      description: Base entity schema for use in TMForum Open-APIs. Property.
+      type: object
+    Error:
+      allOf:
+        - $ref: '#/components/schemas/Extensible'
+        - properties:
+            code:
+              description: "Application relevant detail, defined in the API or a common\
+              \ list."
+              type: string
+            reason:
+              description: Explanation of the reason for the error which can be shown
+                to a client user.
+              type: string
+            message:
+              description: More details and corrective actions related to the error
+                which can be shown to a client user.
+              type: string
+            status:
+              description: HTTP Error code extension
+              type: string
+            referenceError:
+              description: URI of documentation describing the error.
+              type: string
+          required:
+            - code
+            - reason
+          type: object
+      description: "Used when an API throws an Error, typically with a HTTP error\
+        \ response-code (3xx, 4xx, 5xx)"
+      discriminator:
+        mapping:
+          Error: '#/components/schemas/Error'
+        propertyName: '@type'
+  securitySchemes: {}
