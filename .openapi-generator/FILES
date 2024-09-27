@@ -1,0 +1,12 @@
+docs/Addressable.md
+docs/Entity.md
+docs/Error.md
+docs/Extensible.md
+docs/Project.md
+docs/ProjectApi.md
+src/main/java/com/pia/sample/api/ProjectApi.java
+src/main/java/com/pia/sample/model/Addressable.java
+src/main/java/com/pia/sample/model/Entity.java
+src/main/java/com/pia/sample/model/Error.java
+src/main/java/com/pia/sample/model/Extensible.java
+src/main/java/com/pia/sample/model/Project.java
