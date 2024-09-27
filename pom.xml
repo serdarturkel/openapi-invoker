@@ -181,6 +181,30 @@
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <version>7.8.0</version>
+                <configuration>
+                    <generatorName>java</generatorName>
+                    <library>okhttp-gson</library>
+                    <generateSupportingFiles>true</generateSupportingFiles>
+                    <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+                    <output>${project.basedir}/generated-files</output>
+                    <configOptions>
+                        <serializableModel>true</serializableModel>
+                        <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
+                        <sourceFolder>src/main/java/</sourceFolder>
+                        <delegatePattern>true</delegatePattern>
+                        <interfaceOnly>true</interfaceOnly>
+                        <dateLibrary>java8</dateLibrary>
+                        <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                        <userRuntimeException>true</userRuntimeException>
+                        <io.swagger.parser.util.RemoteUrl.trustAll>true
+                        </io.swagger.parser.util.RemoteUrl.trustAll>
+                        <file.encoding>UTF-8</file.encoding>
+                        <user.language>en</user.language>
+                        <user.country>US</user.country>
+                        <user.variant>US</user.variant>
+                    </configOptions>
+                </configuration>
+
                 <executions>
                     <execution>
                         <id>ProjectManagementApi</id>
@@ -189,30 +213,9 @@
                         </goals>
                         <configuration>
                             <inputSpec>${project.basedir}/openapi-files/openapi.yaml</inputSpec>
-                            <generatorName>java</generatorName>
-                            <library>okhttp-gson</library>
                             <apiPackage>com.beassolution.sample.api</apiPackage>
                             <modelPackage>com.beassolution.sample.model</modelPackage>
                             <invokerPackage>com.beassolution.openapi.invoker</invokerPackage>
-                            <generateSupportingFiles>true</generateSupportingFiles>
-                            <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
-                            <output>${project.basedir}/generated-files</output>
-                            <configOptions>
-                                <serializableModel>true</serializableModel>
-                                <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
-                                <sourceFolder>src/main/java/</sourceFolder>
-                                <delegatePattern>true</delegatePattern>
-                                <interfaceOnly>true</interfaceOnly>
-                                <dateLibrary>java8</dateLibrary>
-                                <hideGenerationTimestamp>true</hideGenerationTimestamp>
-                                <userRuntimeException>true</userRuntimeException>
-                                <io.swagger.parser.util.RemoteUrl.trustAll>true
-                                </io.swagger.parser.util.RemoteUrl.trustAll>
-                                <file.encoding>UTF-8</file.encoding>
-                                <user.language>en</user.language>
-                                <user.country>US</user.country>
-                                <user.variant>US</user.variant>
-                            </configOptions>
                         </configuration>
                     </execution>
                 </executions>
@@ -241,4 +244,11 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub serdarturkel Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/serdarturkel/openapi-invoker</url>
+        </repository>
+    </distributionManagement>
 </project>
